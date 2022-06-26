@@ -1,4 +1,4 @@
-# project01
+# Vue JS project01 || SMK Coding hari ke 2
 
 ## Project setup
 ```
