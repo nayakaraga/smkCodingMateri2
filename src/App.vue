@@ -26,15 +26,46 @@
             </div>
 
             <div class="row">
-              <button class="btn btn-danger btn-rounded" @click="item.qty--">Remove Qty</button>
-              <p>{{ item.qty }}</p>
-              <button class="btn btn-warning btn-rounded" @click="item.qty++">Add Qty</button>
+              <button @click="item.status ? addCart(item) : removeCart(item)"
+                :class="{ 'btn btn-warning btn-rounded': item.status, 'btn btn-outline-warning btn-rounded' : !item.status}">
+                {{ item.status ? 'Add to Cart' : 'Remove from Cart'}}
+              </button>
             </div>
 
           </div>
         </div>
       </div>
     </div>
+
+    <div class="container py-5">
+      <div class="row text-center text-black mb-5">
+        <div class="col-lg-7 mx-auto">
+          <h1 class="display-4">Cart List</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div v-for="cart in cartList" :key="cart" class="col-lg-8 mx-auto py-2">
+          <ul class="list-group shadow">
+            <li class="list-group-item">
+              <div class="media align-items-lg-center d-flex align-items-center justify-content-between p-3">
+
+                <div class="media-body">
+                  <h5 class="mt-0 font-weight-bold mb-2">{{ cart.product }}</h5>
+                  <p class="font-italic mb-0 small">Kategori {{ cart.catagory }}</p>
+                  <div class="d-flex align-items-center justify-content-between mt-1">
+                    <h6 class="font-weight-bold my-2">Rp. {{cart.price}}</h6>
+                  </div>
+                </div>
+
+                <img :src="cart.image" alt="" width="200" class="ml-lg-5 order-1 order-lg-2">
+
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 </template>
@@ -48,7 +79,8 @@ export default {
   data() {
     return {
       items: products.arrayProducts,
-      count: 0
+      count: 0,
+      cartList: []
     }
   },
   methods: {
@@ -57,6 +89,23 @@ export default {
     },
     decrement() {
       this.count -= 1
+    },
+    addCart(cart) {
+      cart.status = !cart.status
+      this.cartList.push(cart)
+    },
+    removeCart(cart) {
+      cart.status = true
+
+      for (let index = 0; index < this.cartList.length; index++) {
+        if (this.cartList[index].status) {
+          this.cartList.splice(index, 1);
+        }
+      }
+
+
+
+      // this.cartList.pop(cart)
     }
   },
 }
